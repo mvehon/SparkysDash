@@ -3,4 +3,5 @@
 <resources>
     <color name="sparkyred">#9a0024</color>
     <color name="sparkygold">#ffb611</color>
+    <color name="white">#fff</color>
 </resources>

@@ -1,32 +1,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"  tools:context=".MainMenu"
-    android:background="@drawable/DesertCityParallax">
-
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView" />
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/desertcityparallax">
 
     <Button
+        android:id="@+id/playbtn"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:id="@+id/imageButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="40dp"
         android:background="@color/sparkyred"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="30dp"
-        android:layout_marginBottom="20dp"
+        android:padding="5dp"
         android:text="Play"
-        android:padding="5dp"/>
+        android:visibility="visible" />
+
     <Button
+        android:id="@+id/imageButton1"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:id="@+id/imageButton"
+        android:layout_below="@+id/playbtn"
+        android:layout_alignLeft="@+id/playbtn"
         android:background="@color/sparkygold"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="20dp"
+        android:padding="5dp"
         android:text="Options"
-        android:padding="5dp"/>
+        android:visibility="visible" />
+
+    <ImageView
+        android:layout_width="350dp"
+        android:layout_height="100dp"
+        android:id="@+id/imageView"
+        android:src="@drawable/logo"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
