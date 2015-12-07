@@ -2,6 +2,7 @@ package nightcapstone.sparkysdash;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.util.Log;
 
 public class Sparky extends Sprite {
     public static Bitmap globalBitmap;
@@ -13,10 +14,12 @@ public class Sparky extends Sprite {
             globalBitmap = getScaledBitmapAlpha8(game, R.drawable.sparkysprite);
         }
         this.bitmap = globalBitmap;
-        this.width = this.bitmap.getWidth() / (colNr = 8);          // 8 frames in a row
-        this.height = this.bitmap.getHeight() / 4;                  // 4 frames in a column
-        this.frameTime = 3;                                         // the frame will change every 3 runs
-        this.y = game.getResources().getDisplayMetrics().heightPixels / 2 - this.height / 2;    // Start position in in the middle of the screen
+        this.width = this.bitmap.getWidth() / (colNr = 8);                                      // 8 frames in a row
+        this.height = this.bitmap.getHeight() / 4;                                              // 4 frames in a column
+        this.frameTime = 3;                                                                     // the frame will change every 3 runs
+        //this.y = game.getResources().getDisplayMetrics().heightPixels / 2 - this.height/2;
+        this.y = (int) (game.getResources().getDisplayMetrics().heightPixels - game.getResources().getDisplayMetrics().heightPixels *
+                Background.GROUND_HEIGHT - this.height * 1.1);                              // Start level with the ground
     }
 
     @Override
@@ -41,7 +44,7 @@ public class Sparky extends Sprite {
         // manage frames
         if (row != 3) {
             // not dead
-            if (speedY > getTapSpeed() / 3) {
+            if (speedY > getJumpSpeed() / 3) {
                 row = 0;
             } else if (speedY > 0) {
                 row = 1;
@@ -67,25 +70,41 @@ public class Sparky extends Sprite {
     //Handles the jump action
     public void Jump() {
         //TODO fix the jump thing
-        this.speedY = getTapSpeed();
-        this.y += getPosTapIncrease();
+        this.speedY = getJumpSpeed();
+        this.y += getPosJumpIncrease();
+    }
+
+    //Handles the high jump action
+    public void HighJump() {
+        //TODO fix the jump thing
+        this.speedY = getHighJumpSpeed();
+        this.y += getPosHighJumpIncrease();
     }
 
     //Handles the slide action
     public void Slide() {
         //TODO add the slide mechanism
-        this.speedY = getTapSpeed();
-        this.y += getPosTapIncrease();
+        this.speedY = getJumpSpeed();
+        this.y += getPosJumpIncrease();
     }
 
     //Modifies Y speed on tap
-    protected float getTapSpeed() {
-        return -view.getHeight() / 16f;     // -80 @ 720x1280 px
+    protected float getJumpSpeed() {
+        return -view.getHeight() / 10f;     // -134 @ 720x1280 px
     }
 
     //Modifies Y coord on tap
-    protected int getPosTapIncrease() {
-        return -view.getHeight() / 100;     // -12 @ 720x1280 px
+    protected int getPosJumpIncrease() {
+        return -view.getHeight() / 100;     // -13 @ 720x1280 px
+    }
+    //Modifies Y speed on tap
+    protected float getHighJumpSpeed() {
+        return -view.getHeight() / 6f;     // -111 @ 720x1280 px
+    }
+
+    //Modifies Y coord on tap
+    protected int getPosHighJumpIncrease() {
+        return -view.getHeight() / 50;     // -13 @ 720x1280 px
     }
 
     protected float getSpeedTimeDecrease() {

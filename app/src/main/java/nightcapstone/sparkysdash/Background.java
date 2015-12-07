@@ -1,6 +1,7 @@
 package nightcapstone.sparkysdash;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
 public class Background extends Sprite {
@@ -11,7 +12,7 @@ public class Background extends Sprite {
     public Background(GameView view, Game game) {
         super(view, game);
         if (globalBitmap == null) {
-            globalBitmap = getDownScaledBitmapAlpha8(game, R.drawable.bg2);
+            globalBitmap = getDownScaledBitmapAlpha8(game, R.drawable.bg3);
         }
         this.bitmap = globalBitmap;
     }

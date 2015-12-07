@@ -30,6 +30,7 @@ public class GameView extends SurfaceView {
     private Tutorial tutorial;                              //The tutorial that pops up before you start playing
     private boolean tutorialIsShown = true;                 //Whether it is showing
     private int points = 0;                                 //The point counter for passing obstacles
+    long lastpressed=0;
 
     public GameView(Context context) {
         super(context);
@@ -38,8 +39,8 @@ public class GameView extends SurfaceView {
 
         //Initialize the game objects
         holder = getHolder();
-        player = new Sparky(this, game);
         background = new Background(this, game);
+        player = new Sparky(this, game);
         optionButton = new OptionButton(this, game);
         tutorial = new Tutorial(this, game);
     }
@@ -93,12 +94,22 @@ public class GameView extends SurfaceView {
                 //If the touch was on the left side of the screen, perform a jump
                 if (event.getX() <= this.getWidth() / 2) {
                     Log.d("Touch", "Jump");
-                    this.player.Jump();
+                    lastpressed = System.currentTimeMillis();
                 }
                 //If the event was on the right hand of the screen, perform a slide
                 else {
                     Log.d("Touch", "Slide");
                     this.player.Slide();
+                }
+            }
+        } else if (event.getAction() == MotionEvent.ACTION_UP && !this.player.isDead() && event.getX() <= this.getWidth() / 2 && lastpressed!=0) {
+            long touchduration = System.currentTimeMillis() - lastpressed;
+            Log.d("Touch duration", Long.toString(touchduration));
+            if (player.isTouchingGround()) {
+                if (touchduration < 150) {
+                    this.player.Jump();
+                } else {
+                    this.player.HighJump();
                 }
             }
         }
