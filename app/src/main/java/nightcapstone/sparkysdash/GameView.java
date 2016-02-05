@@ -17,7 +17,7 @@ import java.util.TimerTask;
 
 //The gameview contains the canvas that the game appears on, as well as touch events
 public class GameView extends SurfaceView {
-    public static final long UPDATE_INTERVAL = 50;          //This controls the refresh rate of the game
+    public static final long UPDATE_INTERVAL = 50;          //This controls the refresh rate of the game (FPS)
     private Timer timer = new Timer();                      //Set the timer for the threads to run
     private TimerTask timerTask;
     private SurfaceHolder holder;                           //The drawing surface

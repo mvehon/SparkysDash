@@ -11,12 +11,13 @@ public class Sparky extends Sprite {
     public Sparky(GameView view, Game game) {
         super(view, game);
         if (globalBitmap == null) {
-            globalBitmap = getScaledBitmapAlpha8(game, R.drawable.sparkysprite);
+            //globalBitmap = getScaledBitmapAlpha8(game, R.drawable.sparkysprite);
+            globalBitmap = getScaledBitmapAlpha8(game, R.drawable.sparkysheet);
         }
         this.bitmap = globalBitmap;
-        this.width = this.bitmap.getWidth() / (colNr = 8);                                      // 8 frames in a row
-        this.height = this.bitmap.getHeight() / 4;                                              // 4 frames in a column
-        this.frameTime = 3;                                                                     // the frame will change every 3 runs
+        this.width = this.bitmap.getWidth() / (colNr = 6);                                      // 8 frames in a row
+        this.height = this.bitmap.getHeight()/5;                                              // 4 frames in a column
+        this.frameTime = 1;                                                                     // the frame will change every 3 runs
         //this.y = game.getResources().getDisplayMetrics().heightPixels / 2 - this.height/2;
         this.y = (int) (game.getResources().getDisplayMetrics().heightPixels - game.getResources().getDisplayMetrics().heightPixels *
                 Background.GROUND_HEIGHT - this.height * 1.1);                              // Start level with the ground
@@ -39,9 +40,20 @@ public class Sparky extends Sprite {
             }
         }
 
-        changeToNextFrame();
+        //changeToNextFrame();
+        Log.d("Row: ", Integer.toString(row));
+        Log.d("Col: ", Integer.toString(col));
 
+        if(col==5){
+            if(row<4){
+                row++;
+            }
+            else{
+                row=0;
+            }
+        }
         // manage frames
+        /*
         if (row != 3) {
             // not dead
             if (speedY > getJumpSpeed() / 3) {
@@ -51,7 +63,7 @@ public class Sparky extends Sprite {
             } else {
                 row = 2;
             }
-        }
+        }*/
     }
 
     @Override
@@ -90,20 +102,24 @@ public class Sparky extends Sprite {
 
     //Modifies Y speed on tap
     protected float getJumpSpeed() {
+        //Log.d("Jump Speed", Float.toString(-view.getHeight() / 10f));
         return -view.getHeight() / 10f;     // -134 @ 720x1280 px
     }
 
     //Modifies Y coord on tap
     protected int getPosJumpIncrease() {
+        Log.d("Jump Pos Inc", Float.toString(-view.getHeight() / 100));
         return -view.getHeight() / 100;     // -13 @ 720x1280 px
     }
     //Modifies Y speed on tap
     protected float getHighJumpSpeed() {
+        Log.d("High Jump Speed", Float.toString(-view.getHeight() / 6f));
         return -view.getHeight() / 6f;     // -111 @ 720x1280 px
     }
 
     //Modifies Y coord on tap
     protected int getPosHighJumpIncrease() {
+        Log.d("High Jump Pos Inc", Float.toString(-view.getHeight() / 50));
         return -view.getHeight() / 50;     // -13 @ 720x1280 px
     }
 
