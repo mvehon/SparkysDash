@@ -44,7 +44,6 @@ public class Game extends Activity {
 
         handler.sendMessage(Message.obtain(handler, MyHandler.GAME_OVER_DIALOG));
 
-
     }
 
     static class MyHandler extends Handler {
