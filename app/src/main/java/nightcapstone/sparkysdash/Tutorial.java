@@ -10,8 +10,8 @@ public class Tutorial extends Sprite {
         super(view, game);
         if (globalBitmap == null) {
             //globalBitmap = getScaledBitmapAlpha8(game, R.drawable.tutorial2);
-            globalBitmap = BitmapFactory.decodeResource(game.getApplicationContext().getResources(), R.drawable.tutorial2);
-            globalBitmap = globalBitmap.createScaledBitmap(globalBitmap,1750,972,false);
+            globalBitmap = BitmapFactory.decodeResource(game.getApplicationContext().getResources(), R.drawable.tutorial3);
+            //globalBitmap = globalBitmap.createScaledBitmap(globalBitmap,1750,972,false);
         }
         this.bitmap = globalBitmap;
         this.width = this.bitmap.getWidth();
