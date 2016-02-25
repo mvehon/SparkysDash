@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableRow
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tr"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/row_name"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:text=""
         android:textSize="20dp" />
 
@@ -16,7 +16,12 @@
         android:id="@+id/row_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:text=""
         android:textSize="20dp" />
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px"
+        android:layout_weight="1" />
 </TableRow>
