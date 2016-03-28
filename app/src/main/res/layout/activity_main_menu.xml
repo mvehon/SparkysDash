@@ -17,7 +17,7 @@
         android:visibility="visible" />
 
     <Button
-        android:id="@+id/imageButton1"
+        android:id="@+id/optionsbtn"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_below="@+id/playbtn"
