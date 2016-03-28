@@ -8,6 +8,7 @@ import android.widget.Button;
 
 
 public class MainMenu extends Activity {
+    OptionsDialog optionsDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +17,7 @@ public class MainMenu extends Activity {
         setContentView(R.layout.activity_main_menu);
 
         Button play = (Button) findViewById(R.id.playbtn);
+        Button optionsbtn = (Button) findViewById(R.id.optionsbtn);
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -23,6 +25,14 @@ public class MainMenu extends Activity {
             }
         });
 
-        //TODO put options menu button handling here
+
+        optionsDialog = new OptionsDialog(this);
+        optionsbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                optionsDialog.init();
+                optionsDialog.show();
+            }
+        });
     }
 }
