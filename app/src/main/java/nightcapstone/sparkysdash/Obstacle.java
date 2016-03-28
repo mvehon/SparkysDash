@@ -31,6 +31,7 @@ public class Obstacle extends Sprite {
         initPos();
     }
 
+
     //Puts the obstacle into its lane position
     private void initPos() {
         int x = football.lane;
@@ -80,8 +81,6 @@ public class Obstacle extends Sprite {
     @Override
     public void onCollision() {
         super.onCollision();
-        //TODO play record scratch here
-        //Game.soundPool.play(collideSound, MainActivity.volume, MainActivity.volume, 0, 0, 1);
     }
 
 
