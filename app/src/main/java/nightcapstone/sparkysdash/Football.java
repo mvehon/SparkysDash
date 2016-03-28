@@ -21,17 +21,24 @@ public class Football extends Sprite {
         if (globalBitmap == null) {
             //TODO set conditional here for lane=0 to be ground obstacle image
             //TODO put animation handling here
-            globalBitmap = getScaledBitmapAlpha8(game, R.drawable.footballresize);
+            globalBitmap = getScaledBitmapAlpha8(game, R.drawable.footballsheet2);
         }
         this.bitmap = globalBitmap;
-        this.width = this.bitmap.getWidth();
+        //this.width = this.bitmap.getWidth();
         this.height = this.bitmap.getHeight();
+
+        this.width = this.bitmap.getWidth() / (colNr = 10);                                      // 10 frames in a row
+        this.frameTime = 1;                                                                     // the frame will change every 3 runs
     }
 
     //Sets the x and y coordinates
     public void init(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public void move(){
+        super.move();
     }
 
 }
