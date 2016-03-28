@@ -11,7 +11,6 @@ public class Sparky extends Sprite {
     public Sparky(GameView view, Game game) {
         super(view, game);
         if (globalBitmap == null) {
-            //globalBitmap = getScaledBitmapAlpha8(game, R.drawable.sparkysprite);
             globalBitmap = getScaledBitmapAlpha8(game, R.drawable.sparkysheet);
         }
         this.bitmap = globalBitmap;
@@ -41,8 +40,8 @@ public class Sparky extends Sprite {
         }
 
         //changeToNextFrame();
-        Log.d("Row: ", Integer.toString(row));
-        Log.d("Col: ", Integer.toString(col));
+        //Log.d("Row: ", Integer.toString(row));
+        //Log.d("Col: ", Integer.toString(col));
 
         if(col==5){
             if(row<4){
