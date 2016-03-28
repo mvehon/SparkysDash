@@ -62,17 +62,25 @@ public class GameOverDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 if (highscore) {
-                    try {
-                        Score newscore = new Score(edit_name.getText().toString(), gameView.getPoints());
-                        scorelist.add(newscore);
-                        Collections.sort(scorelist, Collections.reverseOrder());
-                        InternalStorage.writeObject(getContext(), "scorelist", scorelist);
-                    } catch (IOException e) {
-                        Log.e("ERR", e.getMessage());
+                    if (edit_name.getText().toString().isEmpty()) {
+                        Toast.makeText(getContext(), "Please enter a name", Toast.LENGTH_SHORT).show();
+                    } else {
+                        try {
+                            Score newscore = new Score(edit_name.getText().toString().toUpperCase(), gameView.getPoints());
+                            scorelist.add(newscore);
+                            Collections.sort(scorelist, Collections.reverseOrder());
+                            InternalStorage.writeObject(getContext(), "scorelist", scorelist);
+                        } catch (IOException e) {
+                            Log.e("ERR", e.getMessage());
+                        }
+                        dismiss();
+                        game.finish();
                     }
+
+                } else {
+                    dismiss();
+                    game.finish();
                 }
-                dismiss();
-                game.finish();
             }
         });
 
@@ -131,20 +139,6 @@ public class GameOverDialog extends Dialog {
             row_score.setText(Integer.toString(scorelist.get(j).getScore()));
         }
 
-
-
-        /*
-        SharedPreferences saves = game.getSharedPreferences(score_save_name, 0);
-        int oldPoints = saves.getInt(best_score_key, 0);
-        if (gameView.getPoints() > oldPoints) {
-            // Save new highscore
-            SharedPreferences.Editor editor = saves.edit();
-            editor.putInt(best_score_key, gameView.getPoints());
-            tvBestScoreVal.setTextColor(Color.RED);
-            editor.commit();
-        }
-        tvCurrentScoreVal.setText("" + gameView.getPoints());
-        tvBestScoreVal.setText("" + oldPoints); */
     }
 
 }
