@@ -1,9 +1,11 @@
 package nightcapstone.sparkysdash;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -31,6 +33,8 @@ public class GameView extends SurfaceView {
     private boolean tutorialIsShown = true;                 //Whether it is showing
     private int points = 0;                                 //The point counter for passing obstacles
     long lastpressed=0;
+    OptionsDialog optionsDialog;
+    SharedPreferences prefs;
 
     public GameView(Context context) {
         super(context);
@@ -150,7 +154,9 @@ public class GameView extends SurfaceView {
     public void optionMenuOpen() {
         stopTimer();
         paused = true;
-        //TODO put the menu popup here
+        optionsDialog = new OptionsDialog(game);
+        optionsDialog.init();
+        optionsDialog.show();
     }
 
     //Handles the initial draw after a pause/starting the game
@@ -287,6 +293,7 @@ public class GameView extends SurfaceView {
 
     //If the player dies, start the gameOver process
     public void gameOver() {
+        deathSound();
         pause();
         playerDeadFall();
         game.gameOver();
@@ -310,6 +317,25 @@ public class GameView extends SurfaceView {
     //Get the current point total
     public int getPoints() {
         return points;
+    }
+
+    public void deathSound() {
+        MediaPlayer musicPlayer = game.musicPlayer;
+        musicPlayer.stop();
+
+        prefs = getContext().getSharedPreferences("com.nightcapstone.sparkysdash",
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        int temp = prefs.getInt("soundeffect_volume", 50);
+        float soundeffect_volume = temp * 0.01f;
+        Log.d("temp", Integer.toString(temp));
+        Log.d("music_volume", Float.toString(soundeffect_volume));
+
+        musicPlayer = MediaPlayer.create(getContext(), R.raw.needlescratch);
+        musicPlayer.setLooping(false);
+        musicPlayer.setVolume(soundeffect_volume, soundeffect_volume);
+        musicPlayer.seekTo(0);    // Reset song to position 0
+        musicPlayer.start();
     }
 
 }
