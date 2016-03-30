@@ -116,6 +116,9 @@ public class GameView extends SurfaceView {
                     this.player.HighJump();
                 }
             }
+        }else if (event.getAction() == MotionEvent.ACTION_UP && !this.player.isDead() && event.getX() >= this.getWidth() / 2) {
+            Log.d("Touch", "unSlide");
+            this.player.unSlide();
         }
         return true;
     }
