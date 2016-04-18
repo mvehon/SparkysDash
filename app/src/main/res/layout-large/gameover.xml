@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@color/sparkyred">
+
+    <TableLayout
+        android:id="@+id/playerscorebox"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/playerinputbox">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Name"
+                android:textColor="@color/sparkygold"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Score"
+                android:textColor="@color/sparkygold"
+                android:textSize="20dp" />
+<!--
+            <Space
+                android:layout_width="20px"
+                android:layout_height="20px"
+                android:layout_weight="1" />
+                !-->
+        </TableRow>
+
+        <ScrollView
+            android:id="@+id/sv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/svc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
+        </ScrollView>
+
+    </TableLayout>
+
+    <TableRow
+        android:id="@+id/playerinputbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/submitscore">
+
+        <EditText
+            android:id="@+id/edit_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="2"
+            android:textColor="@color/sparkygold"
+            android:textColorHint="@color/sparkygold"
+            android:textColorHighlight="@color/sparkygold"
+            android:ems="3"
+            android:hint="Name"
+            android:inputType="textPersonName"
+            android:maxLength="3"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/edit_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Score"
+            android:textColor="@color/sparkygold"
+            android:textSize="20dp" />
+
+    </TableRow>
+
+    <Button
+        android:id="@+id/submitscore"
+        android:layout_alignParentBottom="true"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_weight="1"
+        android:text="Ok" />
+</RelativeLayout>
