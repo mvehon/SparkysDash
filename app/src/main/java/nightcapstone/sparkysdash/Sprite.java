@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.Log;
 
 public class Sprite {
     private static final int DEFAULT_DENSITY = 1024;
@@ -56,33 +57,18 @@ public class Sprite {
     }
 
     //Check if images are touching
-    public boolean isColliding(Sprite sprite){
-        if(this.x + getCollisionTolerance() < sprite.x + sprite.width
-                && this.x + this.width > sprite.x + getCollisionTolerance()
+    public boolean isColliding(Sprite sprite) {
+        //Sprite = player
+        //This = football
+        if ((this.x + getCollisionTolerance() < sprite.x + sprite.width)
+                && ((this.x + this.width) > (sprite.x + getCollisionTolerance()*5+2))
                 && this.y + getCollisionTolerance() < sprite.y + sprite.height
-                && this.y + this.height > sprite.y + getCollisionTolerance()){
+                && this.y + this.height > sprite.y + getCollisionTolerance()) {
             return true;
         }
         return false;
     }
 
-    //The radius for collision
-    public boolean isCollidingRadius(Sprite sprite, float factor){
-        int m1x = this.x+(this.width>>1);
-        int m1y = this.y+(this.height>>1);
-        int m2x = sprite.x+(sprite.width>>1);
-        int m2y = sprite.y+(sprite.height>>1);
-        int dx = m1x - m2x;
-        int dy = m1y - m2y;
-        int d = (int) Math.sqrt(dy*dy + dx*dx);
-
-        if(d < (this.width + sprite.width) * factor
-                || d < (this.height + sprite.height) * factor){
-            return true;
-        }else{
-            return false;
-        }
-    }
 
     //Check if two locations are touching
     public boolean isTouching(int x, int y){
@@ -179,4 +165,9 @@ public class Sprite {
         // 1.2 @ 720x1280 px
         return context.getResources().getDisplayMetrics().heightPixels / 1066f;
     }
+
+    public void init() {
+    }
+
+
 }
