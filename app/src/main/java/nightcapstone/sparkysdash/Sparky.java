@@ -5,15 +5,16 @@ import android.graphics.Canvas;
 import android.util.Log;
 
 public class Sparky extends Sprite {
-    public static Bitmap sparkyrun;
-    public static Bitmap sparkyslide;
+    public Bitmap sparkyrun;
+    public Bitmap sparkyslide;
     protected boolean isDead = false;
+    protected boolean isSliding = false;
     int start;
 
     public Sparky(GameView view, Game game) {
         super(view, game);
         sparkyrun = getScaledBitmapAlpha8(game, R.drawable.sparkysheet);
-        sparkyslide = getScaledBitmapAlpha8(game, R.drawable.sparkyslidesheet);
+        sparkyslide = getScaledBitmapAlpha8(game, R.drawable.sparkyslidesheet2);
 
         this.bitmap = sparkyrun;
         this.width = this.bitmap.getWidth() / (colNr = 6);                                      // 6 frames in a row
@@ -35,40 +36,32 @@ public class Sparky extends Sprite {
             if (this.isTouchingGround()) {
                 //The player is running along the ground
                 speedY = 0;
+                if(this.y!=start && !isSliding){
+                    this.y=start;
+                }
             } else {
                 //The player is moving down
                 this.speedY += getSpeedTimeDecrease();
             }
         }
-
-        //changeToNextFrame();
-        //Log.d("Row: ", Integer.toString(row));
-        //Log.d("Col: ", Integer.toString(col));
-
-        if(col==5){
-            if(row<4){
-                row++;
-            }
-            else{
-                row=0;
+        if (isSliding) {
+            if (col == 5) {
+                if(row<2){
+                    row++;
+                }
             }
         }
-        // manage frames
-        /*
-        if (row != 3) {
-            // not dead
-            if (speedY > getJumpSpeed() / 3) {
-                row = 0;
-            } else if (speedY > 0) {
-                row = 1;
-            } else {
-                row = 2;
+        else{
+            if (col == 5) {
+                col = 0;
+                if (row < 4) {
+                    row++;
+                } else {
+                    row = 0;
+                }
             }
-        }*/
-        if(colNr == 2){
-            row = 0;
-            col = 1;
         }
+
     }
 
     @Override
@@ -80,20 +73,18 @@ public class Sparky extends Sprite {
     public void dead() {
         this.isDead = true;
         this.speedY = getSpeedY() / 2;
-        this.row = 3;
+        //this.row = 3;
         this.frameTime = 3;
     }
 
     //Handles the jump action
     public void Jump() {
-        //TODO fix the jump thing
         this.speedY = getJumpSpeed();
         this.y += getPosJumpIncrease();
     }
 
     //Handles the high jump action
     public void HighJump() {
-        //TODO fix the jump thing
         this.speedY = getHighJumpSpeed();
         this.y += getPosHighJumpIncrease();
     }
@@ -102,11 +93,11 @@ public class Sparky extends Sprite {
     public void Slide() {
         //TODO add the slide mechanism
         bitmap = sparkyslide;
-        this.width = this.bitmap.getWidth() / 2;   // 8 frames in a row
-        this.height = this.bitmap.getHeight();
+        this.width = this.bitmap.getWidth() / (colNr = 6);   // 8 frames in a row
+        this.height = this.bitmap.getHeight()/ 3;
         row = 0;
         col = 0;
-        colNr = 2;
+        isSliding=true;
 
     }
 
@@ -118,8 +109,7 @@ public class Sparky extends Sprite {
         this.height = this.bitmap.getHeight() / 5;
         row = 0;
         col = 0;
-        int floor = (int) (game.getResources().getDisplayMetrics().heightPixels - game.getResources().getDisplayMetrics().heightPixels *
-                Background.GROUND_HEIGHT - this.height * 1.1);
+        isSliding=false;
         if(this.y>start){
             this.y=start;
         }
