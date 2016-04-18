@@ -12,21 +12,23 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
 //The gameview contains the canvas that the game appears on, as well as touch events
 public class GameView extends SurfaceView {
-    public static final long UPDATE_INTERVAL = 50;          //This controls the refresh rate of the game (FPS)
+    public static final long UPDATE_INTERVAL = 20;          //This controls the refresh rate of the game (FPS)
     private Timer timer = new Timer();                      //Set the timer for the threads to run
     private TimerTask timerTask;
     private SurfaceHolder holder;                           //The drawing surface
     private Game game;                                      //Instance of the game activity
     private Sparky player;                                  //The player character
     private Background background;                          //The scrolling background
-    private List<Obstacle> obstacles = new ArrayList<Obstacle>();   //List of all obstacles
+    public List<Obstacle> obstacles = new ArrayList<Obstacle>();   //List of all obstacles
     private OptionButton optionButton;                      //The settings button that appears in game
     volatile private boolean paused = true;                 //Whether the game is in a pause state or not
     private Tutorial tutorial;                              //The tutorial that pops up before you start playing
@@ -35,6 +37,8 @@ public class GameView extends SurfaceView {
     long lastpressed=0;
     OptionsDialog optionsDialog;
     SharedPreferences prefs;
+    MediaPlayer musicPlayer;
+    int thiswidth=0;
 
     public GameView(Context context) {
         super(context);
@@ -47,6 +51,7 @@ public class GameView extends SurfaceView {
         player = new Sparky(this, game);
         optionButton = new OptionButton(this, game);
         tutorial = new Tutorial(this, game);
+
     }
 
     //Start the thread timer
@@ -96,7 +101,7 @@ public class GameView extends SurfaceView {
             //If it is a valid in game touch
             else {
                 //If the touch was on the left side of the screen, perform a jump
-                if (event.getX() <= this.getWidth() / 2) {
+                if (event.getX() <= thiswidth / 2) {
                     Log.d("Touch", "Jump");
                     lastpressed = System.currentTimeMillis();
                 }
@@ -106,7 +111,7 @@ public class GameView extends SurfaceView {
                     this.player.Slide();
                 }
             }
-        } else if (event.getAction() == MotionEvent.ACTION_UP && !this.player.isDead() && event.getX() <= this.getWidth() / 2 && lastpressed!=0) {
+        } else if (event.getAction() == MotionEvent.ACTION_UP && !this.player.isDead() && event.getX() <= thiswidth / 2 && lastpressed!=0) {
             long touchduration = System.currentTimeMillis() - lastpressed;
             Log.d("Touch duration", Long.toString(touchduration));
             if (player.isTouchingGround()) {
@@ -116,7 +121,7 @@ public class GameView extends SurfaceView {
                     this.player.HighJump();
                 }
             }
-        }else if (event.getAction() == MotionEvent.ACTION_UP && !this.player.isDead() && event.getX() >= this.getWidth() / 2) {
+        }else if (event.getAction() == MotionEvent.ACTION_UP && !this.player.isDead() && event.getX() >= thiswidth / 2) {
             Log.d("Touch", "unSlide");
             this.player.unSlide();
         }
@@ -126,9 +131,10 @@ public class GameView extends SurfaceView {
     //Check all the things
     public void run() {
         checkPasses();
+        increasePoints();
         checkOutOfRange();
         checkCollision();
-        createObstacle();
+        createObstacles();
         move();
         draw();
     }
@@ -248,28 +254,40 @@ public class GameView extends SurfaceView {
 
     //Check to see if the obstacle has exited the screen, and remove it from the array
     private void checkOutOfRange() {
-        for (int i = 0; i < obstacles.size(); i++) {
-            if (this.obstacles.get(i).isOutOfRange()) {
-                this.obstacles.remove(i);
-                i--;
+        for (Iterator<Obstacle> obstacleIterator=obstacles.iterator(); obstacleIterator.hasNext();) {
+            Obstacle o = obstacleIterator.next();
+            if (o.isOutOfRange()) {
+                obstacleIterator.remove();
             }
         }
     }
 
     //Check if any two sprites are overlapping
     private void checkCollision() {
-        for (Obstacle o : obstacles) {
+        //for (Obstacle o : obstacles) {
+        for (Iterator<Obstacle> obstacleIterator=obstacles.iterator(); obstacleIterator.hasNext();) {
+            Obstacle o = obstacleIterator.next();
             if (o.isColliding(player)) {
                 o.onCollision();
-                gameOver();
+                if (o.isFootball) {
+                    gameOver();
+                } else {
+                    points += 200;
+                    obstacleIterator.remove();
+                }
             }
         }
     }
 
     //Create new obstacle
-    private void createObstacle() {
-        if (obstacles.size() < 1) {
-            obstacles.add(new Obstacle(this, game));
+    private void createObstacles() {
+        Random rand = new Random();
+        Float pointadj = points/10000.f + rand.nextFloat();
+        if (obstacles.size() == 0) {
+            int numObstacles = (int) Math.min(3, Math.floor(1+pointadj));
+            for(int i = numObstacles; i>0; i--){
+                obstacles.add(new Obstacle(this, game));
+            }
         }
     }
 
@@ -290,7 +308,12 @@ public class GameView extends SurfaceView {
     //Get the speed of the game movement
     public int getSpeedX() {
         // 16 @ 720x1280 px
-        int speedDefault = this.getWidth() / 45;
+        if(thiswidth==0){
+            thiswidth = this.getWidth();
+        }
+
+        int speedDefault = thiswidth / 73;
+        speedDefault = Math.min((thiswidth/73)+(points/500), (thiswidth/46));
         return speedDefault;
     }
 
@@ -314,7 +337,12 @@ public class GameView extends SurfaceView {
 
     //Increment the point total
     public void increasePoints() {
-        points++;
+        points+=1;
+    }
+
+    //Increment the point total
+    public void increasePoints(int inc) {
+        points+=inc;
     }
 
     //Get the current point total
