@@ -8,9 +8,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -58,33 +60,37 @@ public class GameOverDialog extends Dialog {
     }
 
     public void init() {
+        manageScore();
+
         submitscore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (highscore) {
-                    if (edit_name.getText().toString().isEmpty()) {
-                        Toast.makeText(getContext(), "Please enter a name", Toast.LENGTH_SHORT).show();
-                    } else {
-                        try {
-                            Score newscore = new Score(edit_name.getText().toString().toUpperCase(), gameView.getPoints());
-                            scorelist.add(newscore);
-                            Collections.sort(scorelist, Collections.reverseOrder());
-                            InternalStorage.writeObject(getContext(), "scorelist", scorelist);
-                        } catch (IOException e) {
-                            Log.e("ERR", e.getMessage());
-                        }
-                        dismiss();
-                        game.finish();
-                    }
-
+                    recordHighScore();
                 } else {
                     dismiss();
                     game.finish();
                 }
             }
         });
-
-        manageScore();
+/*
+        edit_name.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if(highscore){
+                        recordHighScore();
+                    } else {
+                        dismiss();
+                        game.finish();
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+        */
     }
 
     private void manageScore() {
@@ -139,6 +145,24 @@ public class GameOverDialog extends Dialog {
             row_score.setText(Integer.toString(scorelist.get(j).getScore()));
         }
 
+    }
+
+    public void recordHighScore(){
+
+        if (edit_name.getText().toString().isEmpty()) {
+            Toast.makeText(getContext(), "Please enter a name", Toast.LENGTH_SHORT).show();
+        } else {
+            try {
+                Score newscore = new Score(edit_name.getText().toString().toUpperCase(), gameView.getPoints());
+                scorelist.add(newscore);
+                Collections.sort(scorelist, Collections.reverseOrder());
+                InternalStorage.writeObject(getContext(), "scorelist", scorelist);
+            } catch (IOException e) {
+                Log.e("ERR", e.getMessage());
+            }
+            dismiss();
+            game.finish();
+        }
     }
 
 }
