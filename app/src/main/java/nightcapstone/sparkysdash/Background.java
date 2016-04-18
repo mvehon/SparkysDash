@@ -3,6 +3,7 @@ package nightcapstone.sparkysdash;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.util.Log;
 
 public class Background extends Sprite {
     public static Bitmap globalBitmap;
@@ -15,6 +16,10 @@ public class Background extends Sprite {
             globalBitmap = getDownScaledBitmapAlpha8(game, R.drawable.bg3);
         }
         this.bitmap = globalBitmap;
+
+        Log.d("backh", Integer.toString(this.bitmap.getHeight()));
+        Log.d("backw", Integer.toString(this.bitmap.getWidth()));
+
     }
 
     //This handles the scrolling and wrapping of the background image
