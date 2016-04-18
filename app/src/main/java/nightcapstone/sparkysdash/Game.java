@@ -34,10 +34,6 @@ public class Game extends Activity {
         setContentView(view);
         musicPlayer = null;
         initMusicPlayer();
-        //loadCoins();
-
-
-
     }
 
     @Override
@@ -113,8 +109,6 @@ public class Game extends Activity {
         SharedPreferences.Editor editor = prefs.edit();
         temp = prefs.getInt("music_volume", 50);
         float music_volume = temp * 0.01f;
-        Log.d("temp", Integer.toString(temp));
-        Log.d("music_volume", Float.toString(music_volume));
         if(musicPlayer == null){
             // to avoid unnecessary reinitialisation
             musicPlayer = MediaPlayer.create(this, R.raw.wagon_wheel);
