@@ -1,18 +1,12 @@
 package nightcapstone.sparkysdash;
 
-/**
- * Created by Matthew on 11/30/2015.
- */
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -30,7 +24,6 @@ public class GameOverDialog extends Dialog {
     ArrayList<Score> scorelist = new ArrayList<Score>();
     SharedPreferences prefs = getContext().getSharedPreferences("com.nightcapstone.sparkysdash",
             Context.MODE_PRIVATE);
-    SharedPreferences.Editor editor = prefs.edit();
 
     private Game game;
     private GameView gameView;
@@ -73,6 +66,8 @@ public class GameOverDialog extends Dialog {
                 }
             }
         });
+
+        //Clear on hitting 'Done', removed for now
 /*
         edit_name.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -148,7 +143,6 @@ public class GameOverDialog extends Dialog {
     }
 
     public void recordHighScore(){
-
         if (edit_name.getText().toString().isEmpty()) {
             Toast.makeText(getContext(), "Please enter a name", Toast.LENGTH_SHORT).show();
         } else {

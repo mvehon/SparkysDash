@@ -21,10 +21,5 @@
         android:text=""
         android:textColor="@color/sparkygold"
         android:textSize="20dp" />
-    <!--
-                <Space
-                    android:layout_width="20px"
-                    android:layout_height="20px"
-                    android:layout_weight="1" />
-                    !-->
+
 </TableRow>

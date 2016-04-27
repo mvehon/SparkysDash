@@ -37,7 +37,6 @@ public class GameView extends SurfaceView {
     long lastpressed=0;
     OptionsDialog optionsDialog;
     SharedPreferences prefs;
-    MediaPlayer musicPlayer;
     int thiswidth=0;
 
     public GameView(Context context) {
@@ -102,18 +101,15 @@ public class GameView extends SurfaceView {
             else {
                 //If the touch was on the left side of the screen, perform a jump
                 if (event.getX() <= thiswidth / 2) {
-                    Log.d("Touch", "Jump");
                     lastpressed = System.currentTimeMillis();
                 }
                 //If the event was on the right hand of the screen, perform a slide
                 else {
-                    Log.d("Touch", "Slide");
                     this.player.Slide();
                 }
             }
-        } else if (event.getAction() == MotionEvent.ACTION_UP && !this.player.isDead() && event.getX() <= thiswidth / 2 && lastpressed!=0) {
+        } else if (event.getAction() == MotionEvent.ACTION_UP && !this.player.isDead() && event.getX() <= thiswidth / 2 && lastpressed != 0) {
             long touchduration = System.currentTimeMillis() - lastpressed;
-            Log.d("Touch duration", Long.toString(touchduration));
             if (player.isTouchingGround()) {
                 if (touchduration < 150) {
                     this.player.Jump();
@@ -121,8 +117,7 @@ public class GameView extends SurfaceView {
                     this.player.HighJump();
                 }
             }
-        }else if (event.getAction() == MotionEvent.ACTION_UP && !this.player.isDead() && event.getX() >= thiswidth / 2) {
-            Log.d("Touch", "unSlide");
+        } else if (event.getAction() == MotionEvent.ACTION_UP && !this.player.isDead() && event.getX() >= thiswidth / 2) {
             this.player.unSlide();
         }
         return true;
@@ -264,7 +259,6 @@ public class GameView extends SurfaceView {
 
     //Check if any two sprites are overlapping
     private void checkCollision() {
-        //for (Obstacle o : obstacles) {
         for (Iterator<Obstacle> obstacleIterator=obstacles.iterator(); obstacleIterator.hasNext();) {
             Obstacle o = obstacleIterator.next();
             if (o.isColliding(player)) {
@@ -307,13 +301,12 @@ public class GameView extends SurfaceView {
 
     //Get the speed of the game movement
     public int getSpeedX() {
-        // 16 @ 720x1280 px
         if(thiswidth==0){
             thiswidth = this.getWidth();
         }
 
-        int speedDefault = thiswidth / 73;
-        speedDefault = Math.min((thiswidth/73)+(points/500), (thiswidth/46));
+        //Progressive speed, starts slow and increases with points
+        int speedDefault = Math.min((thiswidth/73)+(points/500), (thiswidth/46));
         return speedDefault;
     }
 
@@ -356,12 +349,10 @@ public class GameView extends SurfaceView {
 
         prefs = getContext().getSharedPreferences("com.nightcapstone.sparkysdash",
                 Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
         int temp = prefs.getInt("soundeffect_volume", 50);
         float soundeffect_volume = temp * 0.01f;
-        Log.d("temp", Integer.toString(temp));
-        Log.d("music_volume", Float.toString(soundeffect_volume));
 
+        //Play the death sound
         musicPlayer = MediaPlayer.create(getContext(), R.raw.needlescratch);
         musicPlayer.setLooping(false);
         musicPlayer.setVolume(soundeffect_volume, soundeffect_volume);

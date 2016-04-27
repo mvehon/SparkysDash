@@ -2,7 +2,6 @@ package nightcapstone.sparkysdash;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.util.Log;
 
 public class Sparky extends Sprite {
     public Bitmap sparkyrun;
@@ -14,7 +13,7 @@ public class Sparky extends Sprite {
     public Sparky(GameView view, Game game) {
         super(view, game);
         sparkyrun = getScaledBitmapAlpha8(game, R.drawable.sparkysheet);
-        sparkyslide = getScaledBitmapAlpha8(game, R.drawable.sparkyslidesheet2);
+        sparkyslide = getScaledBitmapAlpha8(game, R.drawable.sparkyslidesheet);
 
         this.bitmap = sparkyrun;
         this.width = this.bitmap.getWidth() / (colNr = 6);                                      // 6 frames in a row
@@ -22,6 +21,11 @@ public class Sparky extends Sprite {
         this.frameTime = 1;                                                                     // the frame will change every 3 runs
         this.y = (int) (game.getResources().getDisplayMetrics().heightPixels - game.getResources().getDisplayMetrics().heightPixels *
                 Background.GROUND_HEIGHT - this.height * 1.1);                              // Start level with the ground
+
+        //Correct starting position for tablets
+        if(game.getResources().getDisplayMetrics().heightPixels==1200){
+            this.y+=30;
+        }
         start = this.y;
     }
 
@@ -61,7 +65,6 @@ public class Sparky extends Sprite {
                 }
             }
         }
-
     }
 
     @Override
@@ -73,7 +76,6 @@ public class Sparky extends Sprite {
     public void dead() {
         this.isDead = true;
         this.speedY = getSpeedY() / 2;
-        //this.row = 3;
         this.frameTime = 3;
     }
 
@@ -117,29 +119,25 @@ public class Sparky extends Sprite {
 
     //Modifies Y speed on tap
     protected float getJumpSpeed() {
-        //Log.d("Jump Speed", Float.toString(-view.getHeight() / 10f));
-        return -view.getHeight() / 10f;     // -134 @ 720x1280 px
+        return -view.getHeight() / 10f;
     }
 
     //Modifies Y coord on tap
     protected int getPosJumpIncrease() {
-        Log.d("Jump Pos Inc", Float.toString(-view.getHeight() / 100));
-        return -view.getHeight() / 100;     // -13 @ 720x1280 px
+        return -view.getHeight() / 100;
     }
     //Modifies Y speed on tap
     protected float getHighJumpSpeed() {
-        Log.d("High Jump Speed", Float.toString(-view.getHeight() / 6f));
-        return -view.getHeight() / 6f;     // -111 @ 720x1280 px
+        return -view.getHeight() / 6f;
     }
 
     //Modifies Y coord on tap
     protected int getPosHighJumpIncrease() {
-        Log.d("High Jump Pos Inc", Float.toString(-view.getHeight() / 50));
-        return -view.getHeight() / 50;     // -13 @ 720x1280 px
+        return -view.getHeight() / 50;
     }
 
     protected float getSpeedTimeDecrease() {
-        return view.getHeight() / 320;      // 4 @ 720x1280 px
+        return view.getHeight() / 320;
     }
 
     public boolean isDead() {

@@ -1,44 +1,32 @@
 package nightcapstone.sparkysdash;
 
-/**
- * Created by Matthew on 11/30/2015.
- */
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Random;
 
 public class OptionsDialog extends Dialog {
     Score sc;
-    ArrayList<Score> scorelist = new ArrayList<Score>();
     SharedPreferences prefs = getContext().getSharedPreferences("com.nightcapstone.sparkysdash",
             Context.MODE_PRIVATE);
     SharedPreferences.Editor editor = prefs.edit();
 
-    private Game game=null;
-    private MainMenu mainMenu=null;
+    private Game game = null;
+    private MainMenu mainMenu = null;
     private GameView gameView;
 
     Button ok_button;
     SeekBar music_slider, soundeffect_slider;
     TextView slider_txt1, slider_txt2;
+    ImageView filler_image;
 
     public static MediaPlayer musicPlayer;
 
@@ -51,6 +39,7 @@ public class OptionsDialog extends Dialog {
         init();
 
     }
+
     public OptionsDialog(MainMenu mainMenu) {
         super(mainMenu);
         this.mainMenu = mainMenu;
@@ -63,16 +52,18 @@ public class OptionsDialog extends Dialog {
         this.setContentView(R.layout.options);
         this.setCancelable(false);
 
-        ok_button = (Button)findViewById(R.id.ok_button);
+        ok_button = (Button) findViewById(R.id.ok_button);
 
-        music_slider = (SeekBar)findViewById(R.id.music_slider);
-        soundeffect_slider = (SeekBar)findViewById(R.id.soundeffect_slider);
+        filler_image = (ImageView) findViewById(R.id.filler_image);
 
-        music_slider.setProgress(prefs.getInt("music_volume",50));
-        soundeffect_slider.setProgress(prefs.getInt("soundeffect_volume",50));
+        music_slider = (SeekBar) findViewById(R.id.music_slider);
+        soundeffect_slider = (SeekBar) findViewById(R.id.soundeffect_slider);
 
-        slider_txt1 = (TextView)findViewById(R.id.slider_txt1);
-        slider_txt2 = (TextView)findViewById(R.id.slider_txt2);
+        music_slider.setProgress(prefs.getInt("music_volume", 50));
+        soundeffect_slider.setProgress(prefs.getInt("soundeffect_volume", 50));
+
+        slider_txt1 = (TextView) findViewById(R.id.slider_txt1);
+        slider_txt2 = (TextView) findViewById(R.id.slider_txt2);
 
         slider_txt1.setText(Integer.toString(music_slider.getProgress()));
         slider_txt2.setText(Integer.toString(soundeffect_slider.getProgress()));
@@ -82,19 +73,17 @@ public class OptionsDialog extends Dialog {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 slider_txt1.setText(Integer.toString(progress));
-                if(game!=null){
-                    musicPlayer.setVolume(progress*0.01f, progress*0.01f);
+                if (game != null) {
+                    musicPlayer.setVolume(progress * 0.01f, progress * 0.01f);
                 }
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
@@ -106,16 +95,12 @@ public class OptionsDialog extends Dialog {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
-
-
 
 
         ok_button.setOnClickListener(new View.OnClickListener() {
@@ -125,11 +110,28 @@ public class OptionsDialog extends Dialog {
 
                 prefs.edit().putInt("music_volume", music_slider.getProgress()).commit();
                 prefs.edit().putInt("soundeffect_volume", soundeffect_slider.getProgress()).commit();
-                if(game!=null){
+                if (game != null) {
                     gameView.resume();
                 }
             }
         });
+
+        Random random = new Random();
+        int filler = random.nextInt(3);
+
+        switch (filler) {
+            case 0:
+                filler_image.setImageResource(R.drawable.settings1);
+                break;
+            case 1:
+                filler_image.setImageResource(R.drawable.settings2);
+                break;
+            case 2:
+                filler_image.setImageResource(R.drawable.settings3);
+                break;
+
+        }
+
 
     }
 

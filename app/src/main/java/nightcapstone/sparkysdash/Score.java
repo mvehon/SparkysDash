@@ -2,9 +2,6 @@ package nightcapstone.sparkysdash;
 
 import java.io.Serializable;
 
-/**
- * Created by Matthew on 2/4/2016.
- */
 public class Score implements Comparable<Score>, Serializable{
     public String name;
     public int score;

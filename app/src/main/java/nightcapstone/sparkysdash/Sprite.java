@@ -23,36 +23,37 @@ public class Sprite {
     protected GameView view;
     protected Game game;
 
-    public Sprite(GameView view, Game game){
+    public Sprite(GameView view, Game game) {
         this.view = view;
         this.game = game;
         frameTime = 1;
         src = new Rect();
         dst = new Rect();
     }
-    public void draw(Canvas canvas){
-        src.set(col*width, row*height, (col+1)*width, (row+1)*height);
-        dst.set(x, y, x+width, y+height);
+
+    public void draw(Canvas canvas) {
+        src.set(col * width, row * height, (col + 1) * width, (row + 1) * height);
+        dst.set(x, y, x + width, y + height);
         canvas.drawBitmap(bitmap, src, dst, null);
     }
 
-    public void move(){
+    public void move() {
         changeToNextFrame();
-        x+= speedX;
-        y+= speedY;
+        x += speedX;
+        y += speedY;
 
     }
 
-    protected void changeToNextFrame(){
+    protected void changeToNextFrame() {
         this.frameTimeCounter++;
-        if(this.frameTimeCounter >= this.frameTime){
-            this.col = (byte) ((this.col+1) % this.colNr);
+        if (this.frameTimeCounter >= this.frameTime) {
+            this.col = (byte) ((this.col + 1) % this.colNr);
             this.frameTimeCounter = 0;
         }
     }
 
     //Check if object is off the screen
-    public boolean isOutOfRange(){
+    public boolean isOutOfRange() {
         return this.x + width < 0;
     }
 
@@ -61,7 +62,7 @@ public class Sprite {
         //Sprite = player
         //This = football
         if ((this.x + getCollisionTolerance() < sprite.x + sprite.width)
-                && ((this.x + this.width) > (sprite.x + getCollisionTolerance()*5+2))
+                && ((this.x + this.width) > (sprite.x + getCollisionTolerance() * 5 + 2))
                 && this.y + getCollisionTolerance() < sprite.y + sprite.height
                 && this.y + this.height > sprite.y + getCollisionTolerance()) {
             return true;
@@ -71,50 +72,27 @@ public class Sprite {
 
 
     //Check if two locations are touching
-    public boolean isTouching(int x, int y){
-        return (x  > this.x && x  < this.x + width
-                && y  > this.y && y < this.y + height);
+    public boolean isTouching(int x, int y) {
+        return (x > this.x && x < this.x + width
+                && y > this.y && y < this.y + height);
     }
 
     //Handled in subclasses
-    public void onCollision(){
+    public void onCollision() {
     }
 
-    //TODO decide what to do with this
-    //public boolean isTouchingEdge(){		return isTouchingGround() || isTouchingSky();	}
 
     //Check if it is touching the ground
-    public boolean isTouchingGround(){
+    public boolean isTouchingGround() {
         return this.y + this.height > this.view.getHeight() - this.view.getHeight() * Background.GROUND_HEIGHT;
     }
 
-    //Check if it is touching the sky
-    public boolean isTouchingSky(){
-        return this.y < 0;
-    }
-
-    public boolean isPassed(){
+    public boolean isPassed() {
         return this.x + this.width < view.getPlayer().getX();
     }
 
     public int getX() {
         return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public float getSpeedX() {
-        return speedX;
     }
 
     public void setSpeedX(float speedX) {
@@ -125,16 +103,7 @@ public class Sprite {
         return speedY;
     }
 
-    public void setSpeedY(float speedY) {
-        this.speedY = speedY;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    private int getCollisionTolerance(){
-        // 25 @ 720x1280 px
+    private int getCollisionTolerance() {
         return game.getResources().getDisplayMetrics().heightPixels / 50;
     }
 
@@ -144,7 +113,7 @@ public class Sprite {
         bitmapOptions.inPreferredConfig = Bitmap.Config.ALPHA_8;
         bitmapOptions.inScaled = true;
         bitmapOptions.inDensity = DEFAULT_DENSITY;
-        bitmapOptions.inTargetDensity = (int)(getScaleFactor(context)*DEFAULT_DENSITY);
+        bitmapOptions.inTargetDensity = (int) (getScaleFactor(context) * DEFAULT_DENSITY);
         Bitmap b = BitmapFactory.decodeResource(context.getResources(), id, bitmapOptions);
         b.setDensity(context.getResources().getDisplayMetrics().densityDpi);
         return b;
@@ -155,19 +124,18 @@ public class Sprite {
         bitmapOptions.inPreferredConfig = Bitmap.Config.ALPHA_8;
         bitmapOptions.inScaled = true;
         bitmapOptions.inDensity = DEFAULT_DENSITY;
-        bitmapOptions.inTargetDensity = Math.min((int)(getScaleFactor(context)*DEFAULT_DENSITY), DEFAULT_DENSITY);
+        bitmapOptions.inTargetDensity = Math.min((int) (getScaleFactor(context) * DEFAULT_DENSITY), DEFAULT_DENSITY);
         Bitmap b = BitmapFactory.decodeResource(context.getResources(), id, bitmapOptions);
         b.setDensity(context.getResources().getDisplayMetrics().densityDpi);
         return b;
     }
 
-    public static float getScaleFactor(Context context){
-        // 1.2 @ 720x1280 px
+    public static float getScaleFactor(Context context) {
         return context.getResources().getDisplayMetrics().heightPixels / 1066f;
     }
 
-    public void init() {
-    }
+    //Handled in subclass
+    public void init() {}
 
 
 }

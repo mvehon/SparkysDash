@@ -7,7 +7,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.widget.Toast;
 
 
@@ -22,12 +21,12 @@ public class Game extends Activity {
 
 
     public static MediaPlayer musicPlayer;
-    public boolean musicShouldPlay = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         view = new GameView(this);
         gameOverDialog = new GameOverDialog(this);
         handler = new MyHandler(this);
@@ -36,8 +35,10 @@ public class Game extends Activity {
         initMusicPlayer();
     }
 
+    //Allow the user to exit the game
     @Override
     public void onBackPressed() {
+        //Get confirmation and then exit
         if (backPressed) {
             super.onBackPressed();
         } else {
@@ -49,6 +50,7 @@ public class Game extends Activity {
     GameView getGameView() {
         return view;
     }
+
 
     public void gameOver() {
         handler.sendMessage(Message.obtain(handler, MyHandler.GAME_OVER_DIALOG));
@@ -79,7 +81,6 @@ public class Game extends Activity {
 
 
         private void showGameOverDialog() {
-            //++Game.gameOverCounter;
             game.gameOverDialog.init();
             game.gameOverDialog.show();
         }
@@ -103,6 +104,7 @@ public class Game extends Activity {
     }
 
 
+    //Start playing the music
     public void initMusicPlayer(){
         prefs = this.getSharedPreferences("com.nightcapstone.sparkysdash",
                 Context.MODE_PRIVATE);

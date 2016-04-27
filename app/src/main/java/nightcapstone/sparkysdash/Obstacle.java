@@ -1,8 +1,6 @@
 package nightcapstone.sparkysdash;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.util.Log;
 
 import java.util.Random;
 
@@ -15,7 +13,6 @@ public class Obstacle extends Sprite {
     public boolean isFootball = true;
     int objlane=1;
     int arraysize;
-    public static Bitmap globalBitmap;
 
     public Obstacle(GameView view, Game game) {
         super(view, game);
@@ -25,8 +22,7 @@ public class Obstacle extends Sprite {
         arraysize = view.obstacles.size();
         Float coinchance = random.nextFloat();
 
-        Log.d("Array size", Integer.toString(arraysize));
-
+        //Coin chance, 10% for 1 football, 25% for 2, 50% for 3
         switch(arraysize){
             case 0:
                 if(coinchance<0.10){
@@ -50,6 +46,7 @@ public class Obstacle extends Sprite {
 
 
         if(arraysize>=1){
+            //Make sure there are no impossible configurations
             makePossible();
         }
 
@@ -64,14 +61,17 @@ public class Obstacle extends Sprite {
         //Generate a new obstacle
         if (isFootball) {
             if (objlane == 0) {
+                //Generate a hurdle
                 football = new Football(view, game, 0);
             }else {
+                //Generate a football
                 football = new Football(view, game);
             }
         }
         else{
-            coin = new Coin(view, game);}
-
+            //Make a coin
+            coin = new Coin(view, game);
+        }
 
         if(coin!=null){
             this.height = coin.height;
@@ -92,26 +92,24 @@ public class Obstacle extends Sprite {
 
     //Puts the obstacle into its lane position
     private void initPos() {
-        if(coin!=null){
+        if (coin != null) {
             coin.init(game.getResources().getDisplayMetrics().widthPixels, (int) lane[objlane]);
-        }
-        else
+        } else
             football.init(game.getResources().getDisplayMetrics().widthPixels, (int) lane[objlane]);
 
     }
 
     @Override
     public void draw(Canvas canvas) {
-        if(coin!=null){
+        if (coin != null) {
             coin.draw(canvas);
-        }
-        else
+        } else
             football.draw(canvas);
     }
 
     @Override
     public boolean isOutOfRange() {
-        if(coin!=null){
+        if (coin != null) {
             return coin.isOutOfRange();
         }
         return football.isOutOfRange();
@@ -119,7 +117,7 @@ public class Obstacle extends Sprite {
 
     @Override
     public boolean isColliding(Sprite sprite) {
-        if(coin!=null){
+        if (coin != null) {
             return coin.isColliding(sprite);
         }
         return football.isColliding(sprite);
@@ -128,27 +126,25 @@ public class Obstacle extends Sprite {
     @Override
     public void move() {
         //this.move();
-        if(coin!=null){
+        if (coin != null) {
             coin.move();
-        }
-        else
+        } else
             football.move();
     }
 
     @Override
     public void setSpeedX(float speedX) {
         //this.setSpeedX(speedX);
-        if(coin!=null){
+        if (coin != null) {
             coin.setSpeedX(speedX);
-        }
-        else
+        } else
             football.setSpeedX(speedX);
     }
 
     //If an obstacle has been passed
     @Override
     public boolean isPassed() {
-        if(coin!=null){
+        if (coin != null) {
             return coin.isPassed();
         }
         return football.isPassed();
@@ -168,15 +164,15 @@ public class Obstacle extends Sprite {
         super.onCollision();
     }
 
-    public void makePossible(){
+    public void makePossible() {
         Random rand = new Random();
-        if(arraysize==1){
+        if (arraysize == 1) {
             int obpos1 = view.obstacles.get(0).objlane;
             boolean obtype1 = view.obstacles.get(0).isFootball;
-            while(obpos1==objlane){
+            while (obpos1 == objlane) {
                 objlane = rand.nextInt(4);
             }
-            if((obpos1==0||obpos1==2) &&(objlane==0||objlane==2)){
+            if ((obpos1 == 0 || obpos1 == 2) && (objlane == 0 || objlane == 2)) {
                 objlane++;
             }
         }

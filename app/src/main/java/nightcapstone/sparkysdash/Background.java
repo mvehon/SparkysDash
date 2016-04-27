@@ -1,25 +1,24 @@
 package nightcapstone.sparkysdash;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.util.Log;
 
 public class Background extends Sprite {
-    public static Bitmap globalBitmap;
-    public static final float GROUND_HEIGHT = (1f * 155) / 720; //This is a small float ~= .21 used as a marker for the portion of screen where ground is
+    public static Bitmap bg_img;
+    
+    //This is a small float ~= .215 used as a marker for the portion of screen where ground is
+    public static final float GROUND_HEIGHT = (1f * 155) / 720; 
 
     //Set the image used for the background
     public Background(GameView view, Game game) {
         super(view, game);
-        if (globalBitmap == null) {
-            globalBitmap = getDownScaledBitmapAlpha8(game, R.drawable.bg3);
+
+        //Reuse if bitmap already exists
+        if (bg_img == null) {
+            bg_img = getDownScaledBitmapAlpha8(game, R.drawable.bg3);
         }
-        this.bitmap = globalBitmap;
 
-        Log.d("backh", Integer.toString(this.bitmap.getHeight()));
-        Log.d("backw", Integer.toString(this.bitmap.getWidth()));
-
+        this.bitmap = bg_img;
     }
 
     //This handles the scrolling and wrapping of the background image
